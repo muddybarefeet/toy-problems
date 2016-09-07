@@ -66,10 +66,22 @@
 // and then iteratively returns the root of the `BinaryHeap` until its empty, thus returning a sorted array.
 
 
-function BinaryHeap () {
+function BinaryHeap (isMin) {
+  //boolean to say if min/max heap
   this._heap = [];
   // this compare function will result in a minHeap, use it to make comparisons between nodes in your solution
-  this._compare = function (i, j) { return i < j; };
+  //return bool
+  this.isMin = isMin;
+
+  this._compare = function (current, checkAgainst) {
+    if (this.isMin) {
+      //if true return true if current node less
+      return current > checkAgainst;
+    } else {
+      //else return true if current more
+      return current < checkAgainst;
+    }
+  };
 }
 
 // This function works just fine and shouldn't be modified
@@ -82,7 +94,7 @@ BinaryHeap.prototype.insert = function (value) {
   this._heap.push(value);
   var index = this._heap.length-1;
   //could have edge case for array of length 2 and less?
-  while (this._heap[Math.floor( (index - 1) / 2 )] > value) {
+  while (this._compare(this._heap[Math.floor( (index - 1) / 2 )],value)) {
     this._heap[index] = this._heap[Math.floor( (index - 1) / 2 )];
     this._heap[Math.floor( (index - 1) / 2 )] = value;
     index = Math.floor( (index - 1) / 2 );
@@ -106,14 +118,16 @@ BinaryHeap.prototype.removeRoot = function () {
     }
     var smaller;
     //if the first child is less than the root make smaller the index to swap root with
-    if (child1 < that._heap[currentIndex] && child2 < that._heap[currentIndex] || child1 < that._heap[currentIndex] || child2 < that._heap[currentIndex]) {
+    if (that._compare(that._heap[currentIndex],child1) && that._compare(that._heap[currentIndex],child2) || that._compare(that._heap[currentIndex],child1) || that._compare(that._heap[currentIndex],child2)) {
       // find the smaller
-      if (child1 < child2) {
+      console.log('here');
+      if (that._compare(child2,child1)) {
         smaller = currentIndex * 2 + 1;
       } else {
         smaller = currentIndex * 2 + 2;
       }
     } else {
+      console.log('return');
       return;
     }
     //swap current and child
@@ -139,7 +153,7 @@ BinaryHeap.prototype.swapRoots = function () {
   return this._heap[0];
 };
 
-var heap = new BinaryHeap();
+var heap = new BinaryHeap(false);
 heap.insert(9);
 heap.insert(5);
 heap.insert(2);
