@@ -38,10 +38,6 @@ var Tree = function(number) {
     }
     return false;
   };
-  
-  result.between = function(start,end,googleDoc) {
-
-  };
 
   result.bredthFirst = function(tree) {
     var queue = [];
