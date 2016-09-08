@@ -1,0 +1,16 @@
+{
+  "name": "toyproblems",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/muddybarefeet/toy-problems.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/muddybarefeet/toy-problems/issues"
+  },
+  "homepage": "https://github.com/muddybarefeet/toy-problems#readme"
+}
