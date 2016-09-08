@@ -19,7 +19,6 @@
 
 var rockPaperScissors = function (num) {
 
-  var paper = [];
   var options =["rock","paper","scissors"];
 
   var returnVal = [];
@@ -49,7 +48,6 @@ var rockPaperScissors = function (num) {
 // console.log(rockPaperScissors(3));
 
 //different form of recusion
-
 var rpsGoogleDoc = function (round, googleDoc) {
 
   googleDoc = googleDoc || [];
@@ -57,14 +55,31 @@ var rpsGoogleDoc = function (round, googleDoc) {
 
   if (round !== 0) {
     for (var i=0; i<options.length; i++) {
+      
       var newDoc = googleDoc.slice();
       newDoc.push(options[i]);
+      // console.log(newDoc)
       rpsGoogleDoc(round-1,newDoc);
     }
   } else {
+    console.log(googleDoc);
     return googleDoc;
   }
 
 };
 
-console.log(rpsGoogleDoc(3));
+console.log(rpsGoogleDoc(1));
+
+var rockPaperScissors = function(rounds, round, arr) {
+      if (rounds <= 0) return [];
+
+      var arr = arr || [[]];
+      var result = [];
+      for (var i = 0; i < arr.length; i++) {
+        result.push(arr[i].concat(['rock']));
+        result.push(arr[i].concat(['paper']));
+        result.push(arr[i].concat(['scissors']));
+      }
+      if (round === rounds) return result;
+      else return rockPaperScissors(rounds, round+1, result);
+};
