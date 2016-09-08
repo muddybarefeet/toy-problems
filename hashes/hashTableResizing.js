@@ -1,12 +1,34 @@
 /**
  * Create a hash table with `insert()`, `retrieve()`, and `remove()` methods.
- * The hashtable does not need to resize but it should still handle collisions.
+ * Be sure to handle hashing collisions correctly.
+ * Set your hash table up to double the storage limit as
+ * soon as the total number of items stored is greater than
+ * 3/4th of the number of slots in the storage array.
+ * Resize by half whenever utilization drops below 1/4.
  */
 
-var HashTable = function () {
+var makeHashTable = function(){
   var result = {};
   result.hash = [];
   var max = 10;
+  var size = 0;
+
+  var rehash = function (newMax) {
+    //resize the hash
+    //update max value
+    //take all out of the hash and then rehash using methods already made
+    max = newMax;
+    var oldStorage = result.hash;
+    result.hash = [];
+    size = 0;
+    oldStorage.forEach(function (bucket) {
+      if (bucket) {
+        bucket.forEach(function (tuple) {
+          result.insert(tuple[0],tuple[1]);
+        });
+      }
+    });
+  };
 
   result.insert = function (key,value) {
     var inBucket = false;
@@ -24,8 +46,13 @@ var HashTable = function () {
         }
       }
     }
-
-    if (!inBucket) result.hash[index].push([key,value]);
+    if (!inBucket) {
+      size++;
+      result.hash[index].push([key,value]);
+    }
+    if (size >= 0.75*max) {
+      rehash(max*2);
+    }
     return [key,value];
   };
 
@@ -46,16 +73,22 @@ var HashTable = function () {
     for (var i = 0; i < bucket.length; i++) {
       if (bucket[i][0] === key) {
         value = bucket[i][1];
+        size--;
         delete bucket[i];
       }
+    }
+    //check not need to shrink the hash table
+    if (size <= 0.24*max) {
+      rehash(max/2);
     }
     return [key,value];
   };
 
   return result;
+
 };
 
- // This is a "hashing function". You don't need to worry about it, just use it
+// This is a "hashing function". You don't need to worry about it, just use it
 // to turn any string into an integer that is well-distributed between
 // 0 and max - 1
 var getIndexBelowMaxForKey = function(str, max){
@@ -68,6 +101,10 @@ var getIndexBelowMaxForKey = function(str, max){
   return hash % max;
 };
 
-var hash = HashTable();
-hash.insert("anna",4);
-console.log(hash.remove("anna"))
+
+var hashTable = makeHashTable();
+hashTable.insert('William Shatner\'s most well known role', 'Captain Kirk');
+hashTable.insert('Hi', 'woof');
+console.log('dasas',hashTable.remove("Hi"));
+
+
