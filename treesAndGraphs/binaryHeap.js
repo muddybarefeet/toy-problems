@@ -102,14 +102,16 @@ BinaryHeap.prototype.insert = function (value) {
 };
 
 
-BinaryHeap.prototype.removeRoot = function () {
+BinaryHeap.prototype.removeRoot = function (forSort) {
   // TODO: Your code here
   //make a heap with the roots swapped
-  this.swapRoots();
+  var last = this.swapRoots();
+
+  console.log("s",this._heap);
   var that = this;
   //if one or both children and less than the root swapping needs to happen
   var inner = function (currentIndex) {
-
+    console.log('inner');
     var child1 = that._heap[currentIndex * 2 + 1];
     var child2 = that._heap[currentIndex * 2 + 2];
     //check index is in bounds
@@ -120,23 +122,28 @@ BinaryHeap.prototype.removeRoot = function () {
     //if the first child is less than the root make smaller the index to swap root with
     if (that._compare(that._heap[currentIndex],child1) && that._compare(that._heap[currentIndex],child2) || that._compare(that._heap[currentIndex],child1) || that._compare(that._heap[currentIndex],child2)) {
       // find the smaller
-      console.log('here');
       if (that._compare(child2,child1)) {
         smaller = currentIndex * 2 + 1;
       } else {
         smaller = currentIndex * 2 + 2;
       }
+      //swap current and child
+      var temp = that._heap[currentIndex];
+      that._heap[currentIndex] = that._heap[smaller];
+      that._heap[smaller] = temp;
+      currentIndex = smaller;
+      return inner(smaller);
     } else {
-      console.log('return');
       return;
     }
-    //swap current and child
-    var temp = that._heap[currentIndex];
-    that._heap[currentIndex] = that._heap[smaller];
-    that._heap[smaller] = temp;
-    return inner(smaller);
+    
   };
+
   inner(0);
+  console.log("s2",this._heap);
+  console.log("--------");
+  return last;
+
 };
 
 BinaryHeap.prototype.swapRoots = function () {
@@ -149,17 +156,33 @@ BinaryHeap.prototype.swapRoots = function () {
   this._heap[0] = this._heap[heapLength];
   this._heap[heapLength] = tempOne;
   //remove root from the end of the heap
-  this._heap.splice([heapLength],1);
-  return this._heap[0];
+  return this._heap.pop();
 };
 
-var heap = new BinaryHeap(false);
-heap.insert(9);
-heap.insert(5);
-heap.insert(2);
-heap.insert(8);
-heap.insert(3);
-heap.insert(7);
-heap.insert(1);
-heap.removeRoot();
-console.log(heap);
+// var heap = new BinaryHeap(false);
+// heap.insert(9);
+// heap.insert(5);
+// heap.insert(2);
+// heap.insert(8);
+// heap.insert(3);
+// heap.insert(7);
+// heap.insert(1);
+// heap.removeRoot();
+// console.log(heap);
+
+var heapSort = function (inputArray) {
+  var newHeap = new BinaryHeap(false);
+  for(var i=0; i< inputArray.length; i++) {
+    newHeap.insert(inputArray[i]);
+  }
+
+  var rootIndex = inputArray.length-1;
+  var sorted = [];
+  while (rootIndex >= 0) {
+    sorted.unshift(newHeap.removeRoot(true));
+    rootIndex--;
+  }
+  return sorted;
+};
+
+console.log(heapSort([4,2,9,3,1,7]));
