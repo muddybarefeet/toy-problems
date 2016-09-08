@@ -106,5 +106,5 @@ ve.insert(7);
 ve.insert(15);
 // console.log(ve);
 
-var x = ve.search(55); //[jhjhj, hkjk, kjk]
+var x = ve.search(5); //[jhjhj, hkjk, kjk]
 console.log(x);

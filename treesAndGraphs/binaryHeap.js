@@ -95,9 +95,7 @@ BinaryHeap.prototype.insert = function (value) {
   var index = this._heap.length-1;
   //could have edge case for array of length 2 and less?
   while (this._compare(this._heap[Math.floor( (index - 1) / 2 )],value)) {
-    this._heap[index] = this._heap[Math.floor( (index - 1) / 2 )];
-    this._heap[Math.floor( (index - 1) / 2 )] = value;
-    index = Math.floor( (index - 1) / 2 );
+    this.swap(index,Math.floor( (index - 1) / 2 ));
   }
 };
 
@@ -106,44 +104,41 @@ BinaryHeap.prototype.removeRoot = function (forSort) {
   // TODO: Your code here
   //make a heap with the roots swapped
   var last = this.swapRoots();
-
-  console.log("s",this._heap);
-  var that = this;
-  //if one or both children and less than the root swapping needs to happen
-  var inner = function (currentIndex) {
-    console.log('inner');
-    var child1 = that._heap[currentIndex * 2 + 1];
-    var child2 = that._heap[currentIndex * 2 + 2];
-    //check index is in bounds
-    if (currentIndex === that._heap.length-2) {
-      return;
-    }
-    var smaller;
-    //if the first child is less than the root make smaller the index to swap root with
-    if (that._compare(that._heap[currentIndex],child1) && that._compare(that._heap[currentIndex],child2) || that._compare(that._heap[currentIndex],child1) || that._compare(that._heap[currentIndex],child2)) {
-      // find the smaller
-      if (that._compare(child2,child1)) {
-        smaller = currentIndex * 2 + 1;
-      } else {
-        smaller = currentIndex * 2 + 2;
-      }
-      //swap current and child
-      var temp = that._heap[currentIndex];
-      that._heap[currentIndex] = that._heap[smaller];
-      that._heap[smaller] = temp;
-      currentIndex = smaller;
-      return inner(smaller);
-    } else {
-      return;
-    }
-    
-  };
-
-  inner(0);
-  console.log("s2",this._heap);
-  console.log("--------");
+  this.cascadeRootToCorrectPlace(0);
+  //return the removed root
   return last;
+};
 
+BinaryHeap.prototype.cascadeRootToCorrectPlace = function (currentIndex) {
+  var child1 = this._heap[currentIndex * 2 + 1];
+  var child2 = this._heap[currentIndex * 2 + 2];
+  //check index is in bounds
+  if (this._heap.length === 2) {
+    if (this._compare(this._heap[0],this._heap[1])) {
+      this.swap(0,1);
+    }
+  }
+  var smaller;
+  //if the first child is less than the root make smaller the index to swap root with
+  if (this._compare(this._heap[currentIndex],child1) || this._compare(this._heap[currentIndex],child2)) {
+    // find the smaller
+    if (this._compare(child2,child1)) {
+      smaller = currentIndex * 2 + 1;
+    } else {
+      smaller = currentIndex * 2 + 2;
+    }
+    //swap current and child
+    this.swap(currentIndex,smaller);
+    return this.cascadeRootToCorrectPlace(smaller);
+  } else {
+    return;
+  }
+};
+
+BinaryHeap.prototype.swap = function (indexCurrent,IndexToSwap) {
+  var temp = this._heap[indexCurrent];
+  this._heap[indexCurrent] = this._heap[IndexToSwap];
+  this._heap[IndexToSwap] = temp;
 };
 
 BinaryHeap.prototype.swapRoots = function () {
@@ -159,16 +154,16 @@ BinaryHeap.prototype.swapRoots = function () {
   return this._heap.pop();
 };
 
-// var heap = new BinaryHeap(false);
-// heap.insert(9);
-// heap.insert(5);
-// heap.insert(2);
-// heap.insert(8);
+var heap = new BinaryHeap(true);
+heap.insert(9);
+heap.insert(5);
+heap.insert(2);
+heap.insert(8);
 // heap.insert(3);
 // heap.insert(7);
 // heap.insert(1);
 // heap.removeRoot();
-// console.log(heap);
+console.log(heap);
 
 var heapSort = function (inputArray) {
   var newHeap = new BinaryHeap(false);
@@ -185,4 +180,4 @@ var heapSort = function (inputArray) {
   return sorted;
 };
 
-console.log(heapSort([4,2,9,3,1,7]));
+// console.log(heapSort([4,2,9,3,1,7]));
