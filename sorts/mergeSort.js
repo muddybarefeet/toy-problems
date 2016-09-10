@@ -1,4 +1,4 @@
-//1. split arrays down the on element long 
+``//1. split arrays down the on element long 
 //2. merge back together
 
 //timecomplexity: 0(n log(n))

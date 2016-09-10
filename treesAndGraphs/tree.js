@@ -104,7 +104,40 @@ ve.insert(20);
 ve.insert(2);
 ve.insert(7);
 ve.insert(15);
+
+
 // console.log(ve);
 
-var x = ve.search(5); //[jhjhj, hkjk, kjk]
-console.log(x);
+// var x = ve.search(5); //[jhjhj, hkjk, kjk]
+// console.log(x);
+
+var isBalanced = function (tree) {
+  if (checkHeight(tree) > -1) {
+    return true;
+  }
+  return false;
+};
+
+var checkHeight = function (node) {
+  console.log(node);
+  //if a leaf the return 0
+  if (node === null) {
+    return 0;
+  }
+  //get height of sides
+  var heightLeft = checkHeight(node.leftSide);
+  var heightRight = checkHeight(node.rightSide);
+  console.log("---->",heightLeft,heightRight)
+  //if either sides height is -1 then return -1
+  if (heightRight === -1 || heightLeft === -1) {
+    return -1;
+  }
+  //if the diff in hight of eiher subtree is greater than 1 then not balanced
+  if ( Math.abs(heightLeft - heightRight) > 1 ) {
+    return -1;
+  }
+  //return the greater height
+  return heightRight >= heightLeft ? heightRight + 1 : heightLeft + 1;
+};
+
+console.log(isBalanced(ve));

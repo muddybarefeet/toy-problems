@@ -1,6 +1,8 @@
 // take the right most number as a pivot
 //put everything less than the pivot to the right and everthing greater t the left (in place)
 //keep doing this with each sub array until everything is in its own in an array - then join
+// 0(n log(n))
+//memory 0(log(n))
 
 
 //in place
