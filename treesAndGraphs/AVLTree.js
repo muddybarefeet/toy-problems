@@ -13,8 +13,8 @@ var Tree = function(number) {
   var makeNode = function (value,depth) {
     var node = {};
     node.value = value;
-    node.left = {};
-    node.right = {};
+    node.leftSide = {};
+    node.rightSide = {};
     //node.depth = depth;
     return node;
   };
@@ -22,30 +22,26 @@ var Tree = function(number) {
   result.insert = function (num) {
     //keep count of depth to pass to new node on insertion
     if (num < result.value) {
-      //if right null and left not this will end up being unbalanced
-      if (result.leftSide !== null && result.rightSide === null) {
-        // get the value of the left side
-        var leftNode = result.leftSide;
-        if (leftNode.value < num) {
-          //this will be a line
-          //reset left child to current leaf
-          result.leftSide = Tree(num);
-          //set the current node as right??
-          //set the leftNode as the current node??
-        } else {
-          //this will be a zig zag - two rotations
-          //1.
-          result.leftSide = Tree(num);
-          result.leftSide.leftSide = leftNode;
-          //2.
-          //res.left = current
-          //current is right child
-          //curr left = leftNode (no change needed as already left child of mid one)
+
+      //1. check there is a left
+      if (result.leftSide !== null) {
+        //then check that the if current add num which side
+        var parentNode = result.leftSide;
+        if (num > parentNode.value) {
+          if (parentNode.leftSide === null && parentNode.rightSide !==null) {
+            var childNode = parentNode.rightSide;
+            if (num < childNode.value) {
+              //zigzag
+            } else {
+              //line
+            }
+          }
         }
-      }
-      else {
+      } else {
          result.leftSide.insert(num);
       }
+
+
       // if (result.leftSide === null) {
       //   result.leftSide = Tree(num);
       // } 

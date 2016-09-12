@@ -14,6 +14,8 @@
 // var boundClick = myButton.click.bind(myButton);
 // boundClick(); // bound, 'this' is myButton
 
+//implement bind
+
 Function.prototype.bind = function (context) {
   //set this value
   var that = this;
