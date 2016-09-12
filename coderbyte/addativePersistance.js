@@ -2,3 +2,4 @@
 added together to get to a one diget number. 
 e.g 25 = 2+5 = 7 count = 1
 */
+

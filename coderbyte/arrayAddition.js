@@ -1,4 +1,3 @@
-
 /*
 Using the JavaScript language, have the function ArrayAdditionI(arr) 
 take the array of numbers stored in arr and return the string true if 
