@@ -18,9 +18,15 @@ var meanMode = function (arr) {
     return prev + curr;
   },0))/arr.length;
 
-  console.log(mode);
-  
+  var modal = 1;
 
+  for (var key in mode) {
+    if (mode[key] > modal) {
+      modal = mode[key];
+    }
+  }
+
+  return modal === mean ? 1 : -1;
 };
 
-meanMode([1,2,3,1]);
+console.log(meanMode([5, 3, 3, 3, 1]));
