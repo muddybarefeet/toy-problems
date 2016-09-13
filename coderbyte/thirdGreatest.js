@@ -14,3 +14,12 @@ Input = "abc","defg","z","hijk"Output = "abc"
 
 */
 
+var thirdGreatest = function (strArray) {
+  //return third greatest last word in array
+  //1. make hash of the words and their count and index
+  //2. order by length
+  
+  
+};
+
+console.log(thirdGreatest(["the", "mightier", "mightier", "mightier", "than", "the", "sword"]));
