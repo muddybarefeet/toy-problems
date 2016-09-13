@@ -16,10 +16,32 @@ Input = "abc","defg","z","hijk"Output = "abc"
 
 var thirdGreatest = function (strArray) {
   //return third greatest last word in array
-  //1. make hash of the words and their count and index
-  //2. order by length
-  
-  
+  //make a hash keyed by length and arrays of words of that length pushed to array in order appear
+  var hash = {};
+  var greatest = 0;
+  for (var i=0; i<strArray.length; i++) {
+    var key = strArray[i].length;
+    if (key > greatest) greatest = key;
+    if (hash[key]) {
+      hash[key].push(strArray[i]);
+    } else {
+      hash[key] = [strArray[i]];
+    }
+  }
+  console.log(hash);
+  //take greatest and loop down from greatest until have three things
+  var top3 = [];
+
+  while (top3.length < 3) {
+    if (hash[greatest]) {
+      top3 = top3.concat(hash[greatest]);
+    }
+    greatest--;
+  }
+  //check that only three were added to top3
+  return top3[2];
+
 };
 
-console.log(thirdGreatest(["the", "mightier", "mightier", "mightier", "than", "the", "sword"]));
+console.log(thirdGreatest(["mightier", "mightier", "mightier", "mightier", "mightier", "mightier", "sword"]));
+
