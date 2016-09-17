@@ -12,13 +12,13 @@ var Tree = function(number) {
   //methods the tree should have
 
   result.insert = function(num) {
-    if (num < result.value) {
+    if (num > result.value) {
       if (result.leftSide === null) {
         result.leftSide = Tree(num);
       } else {
         result.leftSide.insert(num);
       }
-    } else if (num >= result.value) {
+    } else if (num < result.value) {
       if (result.rightSide === null) {
         result.rightSide = Tree(num);
       } else {
@@ -104,40 +104,24 @@ ve.insert(20);
 ve.insert(2);
 ve.insert(7);
 ve.insert(15);
+// console.log(ve)
 
+//check again??
+var isValid = function (tree) {
 
-// console.log(ve);
-
-// var x = ve.search(5); //[jhjhj, hkjk, kjk]
-// console.log(x);
-
-var isBalanced = function (tree) {
-  if (checkHeight(tree) > -1) {
-    return true;
+  if (tree.leftSide && tree.leftSide.value < tree.value) {
+    isValid(tree.leftSide);
+  } else if (tree.leftSide && tree.leftSide.value > tree.value) {
+    return false;
+  } else if (tree.rightSide && tree.rightSide.value > tree.value) {
+    isValid(tree.rightSide);
+  } else if (tree.rightSide && tree.rightSide.value < tree.value) {
+    return false;
   }
-  return false;
+  return true;
+  
 };
+  
 
-var checkHeight = function (node) {
-  console.log(node);
-  //if a leaf the return 0
-  if (node === null) {
-    return 0;
-  }
-  //get height of sides
-  var heightLeft = checkHeight(node.leftSide);
-  var heightRight = checkHeight(node.rightSide);
-  console.log("---->",heightLeft,heightRight)
-  //if either sides height is -1 then return -1
-  if (heightRight === -1 || heightLeft === -1) {
-    return -1;
-  }
-  //if the diff in hight of eiher subtree is greater than 1 then not balanced
-  if ( Math.abs(heightLeft - heightRight) > 1 ) {
-    return -1;
-  }
-  //return the greater height
-  return heightRight >= heightLeft ? heightRight + 1 : heightLeft + 1;
-};
+console.log(isValid(ve));
 
-console.log(isBalanced(ve));
