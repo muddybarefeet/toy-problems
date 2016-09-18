@@ -1,4 +1,4 @@
-// take a stinrg and see if it can be split into separate words
+// take a string and see if it can be split into separate words
 
 var dic = {
   "apple":1,
@@ -39,7 +39,7 @@ var wordBreak2 = function (str) {
     var prefix = str.substring(0,i);
     if (dic[prefix]) {
       //recurse
-      return prefix + " " + wordBreak(str.substring(i,str.length));
+      return prefix + " " + wordBreak2(str.substring(i,str.length));
     }
   }
   return null;
@@ -50,31 +50,50 @@ var wordBreak2 = function (str) {
 
 //----------memoise
 
-var memoised = {};
+var finalAnswer = function(){
 
-var wordBreakMemoize = function (str) {
-  if (dic[str]) return str;
-  //check if been cached already and return if has
-  if (memoised[str]) return memoised[str];
+  var dic = {
+    "apple":1,
+    "pie":1,
+    "fondu":1,
+    "melon":1,
+    "javascript":1,
+    "dolphin":1
+  };
 
-  if (str.length === 0) return null;
-  //loop through the string and on each letter check the dic for the letters up to the current letter
-  //if found then start check string at current index and add from there
-  for (var i = 0; i < str.length; i++) {
-    //if up to the current point the word mactches then save and recurse
-    var prefix = str.substring(0,i);
-    if (dic[prefix]) {
-      //recurse
-      memoised[str] = prefix + " " + wordBreak(str.substring(i,str.length));
-      return memoised[str];
+  var memoised = {};
+
+  return function (str) {
+    if (dic[str]) return str;
+    //check if been cached already and return if has
+    if (memoised[str]) return memoised[str];
+
+    if (str.length === 0) return null;
+    //loop through the string and on each letter check the dic for the letters up to the current letter
+    //if found then start check string at current index and add from there
+    for (var i = 0; i < str.length; i++) {
+      //if up to the current point the word mactches then save and recurse
+      var prefix = str.substring(0,i);
+      if (dic[prefix]) {
+        //recurse
+        memoised[str] = prefix + " " + wordBreak(str.substring(i,str.length));
+        return memoised[str];
+      }
     }
-  }
 
-  memoised[str] = null;
-  return null;
+    memoised[str] = null;
+    return null;
 
-};
+  };
+
+}();
+
+finalAnswer('fooBot')
+
 
 
 
 console.log(wordBreakMemoize("applepiefondumelonjavascriptdolphin"));
+
+
+
