@@ -63,7 +63,7 @@ var finalAnswer = function(){
 
   var memoised = {};
 
-  return function (str) {
+  return function wordBreak (str) {
     if (dic[str]) return str;
     //check if been cached already and return if has
     if (memoised[str]) return memoised[str];
@@ -88,12 +88,10 @@ var finalAnswer = function(){
 
 }();
 
-finalAnswer('fooBot')
+console.log(finalAnswer('applepiefondumelonjavascriptdolphin'));
 
 
 
-
-console.log(wordBreakMemoize("applepiefondumelonjavascriptdolphin"));
 
 
 
