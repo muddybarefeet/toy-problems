@@ -24,4 +24,25 @@ var checkSides = function (str, leftMid, rightMid) {
     return true;
 };
 
-console.log(isPanendrome("civic",1,3));
+// console.log(isPanendrome("civic",1,3));
+
+//find if a word could be a palendrome
+
+var couldBePalendrome = function (str) {
+  
+  var unpariedChars = new Set();
+  for (var i = 0; i < str.length; i++) {
+    if (unpariedChars.has(str[i])) {
+      unpariedChars.delete(str[i]);
+    } else {
+      unpariedChars.add(str[i]);
+    }
+  }
+  if (str.length%2 === 0) {
+    return unpariedChars.size === 0 ? true : false;
+  }
+  return unpariedChars.size === 1 ? true : false;
+
+};
+
+console.log(couldBePalendrome("hihii"));
