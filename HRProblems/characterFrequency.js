@@ -48,15 +48,16 @@
       hash[string[i]] = 1;
     }
   }
+  
   for (var key in hash) {
     arr.push([key, hash[key]]);
   }
-  console.log(arr);
+
   arr.sort(function (a,b) {
     if(a[1] > b[1]) return -1;
-    if (a[1] < b[1]) return 1;
-    if(a[0] > b[0]) return -1;
-    if(a[0] < b[0]) return 1;
+    if(a[1] < b[1]) return 1;
+    if(a[0] < b[0]) return -1;
+    if(a[0] > b[0]) return 1;
   });
   return arr;
  };
