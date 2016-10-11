@@ -1,40 +1,25 @@
 // look though array,find the greatest number and swap with current 
 // 0(n2) time coplexity and 0(1) memory
 
-var swap = function (index1,index2,array) {
-  var temp = array[index1];
-  array[index1] = array[index2];
-  array[index2] = temp;
-  return array;
+
+var swap = function (a,b,originalArray) {
+  var temp = originalArray[a];
+  originalArray[a] = originalArray[b];
+  originalArray[b] = temp;
+  return originalArray;
 };
 
-var selectionSort = function (input) {
-  var currentIndex = 0;
-
-  if (input.length === 1) {
-    return input;
-  }
-
-  while (currentIndex < input.length-1) {
-    //assume no duplicates
-    var lowestIndex = input.length-1;
-    var lowestNum = input[input.length-1];
-    for (var i=currentIndex; i<input.length; i++) {
-      if (input[i] < lowestNum) {
-        lowestIndex = i;
-        lowestNum = input[i];
-      }
+var selectionSort = function (arr) {
+  for (var i = arr.length-1; i >= 0; i--) {
+    var section = arr.slice(0,i+1);
+    var nextBiggest = Math.max.apply(null,section);
+    //dont swap if the same number
+    if (nextBiggest !== arr[i]) {
+      var indexToSwapWith = section.indexOf(nextBiggest);
+      arr = swap(i, indexToSwapWith, arr);
     }
-
-    //swap index with currentIndex unless the same index
-    if (lowestIndex !== currentIndex) {
-      input = swap(currentIndex,lowestIndex, input);
-    }
-
-    currentIndex++;
   }
-
-  return input;
+  return arr;
 };
  
 console.log(selectionSort([3,3,3,5,1,9,2]));
