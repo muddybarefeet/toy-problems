@@ -7,8 +7,8 @@ var reverseLinkedList = function (head) {
   if (head === null || head.next === null) return head;
 
   var current = head;
-  var next = head.next;
-  head.next = null;
+  var next = current.next;
+  current.next = null;
 
   var reverse = function (current, previous) {
     //if the tail
