@@ -43,7 +43,7 @@
 var RangeClass = function (startIndex, endIndex, step) {
 
   this.start = startIndex || null;
-  this.end = endIndex || startIndex;
+  this.end = endIndex || this.start;
   this.step = Math.abs(step) || 1;
 
   if (this.start > this.end) {
@@ -93,7 +93,7 @@ RangeClass.prototype.includes = function (target) {
   return false;
 };
 
-var a = new RangeClass(2,10,2);
-console.log(a.includes(2));
+var a = new RangeClass(5);
+console.log(a.includes(4));
 
 
