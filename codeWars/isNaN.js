@@ -13,4 +13,12 @@ var isAN = function (value) {
   }
 };
 
-isAN(new Number(1));
+
+
+// -- shorter ----
+
+var isAN2 = function (value) {
+  return (value instanceof Number||typeof value === 'number') && !isNaN(value);
+};
+
+console.log(isAN2(new Number("a")));
