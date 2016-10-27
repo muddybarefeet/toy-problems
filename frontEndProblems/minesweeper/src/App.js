@@ -1,12 +1,16 @@
 import React, { Component } from 'react';
 import './App.css';
 
+const bomb = "./images/bomb.png";
+const empty = "./images/grass1.jpg";
+const flag = "./images/flag.png";
+
 const isBombPlaced = function () {
   if (Math.random()<0.2) return true;
   return false;
 };
 
-const calNumbers = function (board) {
+const callNumbers = function (board) {
   return board.map(function (row,rowIndex) {
     return row.map(function (cell, index, wholeRow) {
       if (cell.isBomb === false) {
@@ -43,9 +47,8 @@ const makeBoard = function (size) {
   }
 
   //sort out how many bombs around each cell
-  return calNumbers(board);
+  return callNumbers(board);
 };
-
 
 
 class App extends Component {
@@ -57,12 +60,29 @@ class App extends Component {
     };
   }
 
-  render() {
-    console.log(this.state.board)
-    return (
-      <div className="App">
-        <h1>Minesweeper</h1>
+  handelCellClick (cell) {
+    if (cell.isBomb) {
+      //loop through - change the cell to clicked and has bomb, then re-render
+    } else {
+      //reveal the cell - if the cell has numbers then show number else show empty image
+    }
+  }
 
+  render() {
+    var board = this.state.board.map( (row, indexRow) => {
+      var cells = row.map( (cell, indexCell) => {
+        return (<td key={indexCell}></td>);
+      });
+      return (<tr key={indexRow} onClick={this.handelCellClick.bind(this, cell)}>{cells}</tr>);
+    });
+    return (
+      <div className="container">
+        <h1>Minesweeper</h1>
+        <table className="table-bordered">
+          <tbody>
+            {board}
+          </tbody>
+        </table>
       </div>
     );
   }
