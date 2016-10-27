@@ -7,16 +7,14 @@ function compose(f,g) {
   var funcArgs = Array.prototype.slice.call(arguments);
   return function () {
     var args = Array.prototype.slice.call(arguments);
-    
-    return funcArgs.reduce(function (prev, curr) {
-      return curr.call(null,prev);
-    },0);
-
-  }
+    var firstRes = funcArgs[0].apply(null,args);
+    for (var i=1; i<funcArgs.length;i++){
+      firstRes = funcArgs[i].call(null,firstRes);
+    }
+    return firstRes;
+  };
 }
 
-add1 = function(a){return a + 1}
-id = function(a){return a}
-id2 = function(a){return a + 2}
-id4 = function(a){return a + 4}
-console.log(compose(add1,id, id2, id4)(0))
+add1 = function(a,b){return a + b}
+id = function(a){return a * a}
+console.log(compose(add1,id)(2,3));
