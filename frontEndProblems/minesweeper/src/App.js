@@ -65,26 +65,59 @@ class App extends Component {
     };
   }
 
-  handelCellClick (rowIndex, cell, cellIndex) {
-    if (cell.isBomb === true && cell.clicked === false) {
-      //loop through - change the cell to clicked and has bomb, then re-render
-      var newBoard = update(this.state.board, {
-          [rowIndex]: {
-              [cellIndex]: {
-                clicked: {
-                  $set: true
-                }
-              }
-            }
-        });
+  updateStateWithIndexesToUncover (arrayOfIndexes) {
+    var newBoard = this.state.board.slice();
+    for (var i = 0; i < arrayOfIndexes.length; i++) {
+      var tuple = arrayOfIndexes[i];
+      newBoard[tuple[0]][tuple[1]].clicked = true;
+    }
+    this.setState({
+      board: newBoard
+    });
+  }
 
-        this.setState({
-          board: newBoard
-        })
+  handelCellClick (rowIndex, cell, cellIndex) {
+    if ( (cell.isBomb === true && cell.clicked === false) || cell.surroundingBombs > 0) {
+      //loop through - change the cell to clicked and has bomb, then re-render
+      // var newBoard = update(this.state.board, {
+      //   [rowIndex]: {
+      //       [cellIndex]: {
+      //         clicked: {
+      //           $set: true
+      //         }
+      //       }
+      //     }
+      // });
+      var newBoard = this.state.board.map( (row) => {
+        return row.map( (cell) => {
+          if (cell.isBomb === true) {
+            cell.clicked = true;
+          }
+          return cell;
+        });
+      });
+
+      this.setState({
+        board: newBoard
+      });
     } else {
-      //if not a bomb need to set to clicked
-      
-      
+ 
+      //this.recurseAndUncoverEmpties(rowIndex, cellIndex);
+    }
+  }
+
+  image (indexRow, indexCell) {
+    if (this.state.board[indexRow][indexCell].clicked !== true) {
+      return null;
+    }
+    if (this.state.board[indexRow][indexCell].isBomb === true) {
+      return (<img style={{width:"40px"}} src={bomb} alt="empty cell" />);
+    }
+    if (this.state.board[indexRow][indexCell].surroundingBombs > 0) {
+      return this.state.board[indexRow][indexCell].surroundingBombs;
+    }
+    if (this.state.board[indexRow][indexCell].surroundingBombs === 0) {
+      return (<img style={{width:"40px"}} src={empty} alt="empty cell" />);
     }
   }
 
@@ -92,7 +125,7 @@ class App extends Component {
     var board = this.state.board.map( (row, indexRow) => {
       var cells = row.map( (cell, indexCell) => {
         //image is either null/bomb/empty
-        var image = this.state.board[indexRow][indexCell].clicked !== true ? null : this.state.board[indexRow][indexCell].isBomb === true ? <img style={{width:"40px"}} src={bomb} alt="empty cell" /> : <img style={{width:"40px"}} src={empty} alt="empty cell" />;
+        var image = this.image(indexRow, indexCell);
         return (<td key={indexCell} onClick={this.handelCellClick.bind(this, indexRow, cell, indexCell)}>{image}</td>);
       });
       return (<tr key={indexRow}>{cells}</tr>);
