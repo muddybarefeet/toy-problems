@@ -2,10 +2,6 @@ import React, { Component } from 'react';
 import update from 'react-addons-update';
 import './App.css';
 
-// const bomb = "images/Bomb.png";
-// const empty = "./images/grass1.jpg";
-// const flag = "./images/flag.png";
-
 import bomb from './images/Bomb.png';
 import empty from './images/grass1.jpg';
 import flag from './images/flag.png';
@@ -61,23 +57,50 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      board: makeBoard(7)
+      board: makeBoard(15)
     };
   }
 
-  updateStateWithIndexesToUncover (arrayOfIndexes) {
-    var newBoard = this.state.board.slice();
-    for (var i = 0; i < arrayOfIndexes.length; i++) {
-      var tuple = arrayOfIndexes[i];
-      newBoard[tuple[0]][tuple[1]].clicked = true;
+  recurseAndUncoverEmpties (rowIndex, cellIndex, board) {
+
+    board[rowIndex][cellIndex].clicked = true;
+
+   if (board[rowIndex][cellIndex].surroundingBombs > 0) {
+      this.setState({
+        board: board
+      });
+      return;
     }
-    this.setState({
-      board: newBoard
-    });
+
+    if (board[rowIndex][cellIndex+1] && board[rowIndex][cellIndex+1].isBomb === false && board[rowIndex][cellIndex+1].clicked === false) {
+      this.recurseAndUncoverEmpties(rowIndex, cellIndex+1, board.slice());
+    }
+    if (board[rowIndex][cellIndex-1] && board[rowIndex][cellIndex-1].isBomb === false && board[rowIndex][cellIndex-1].clicked === false) {
+      this.recurseAndUncoverEmpties(rowIndex, cellIndex-1, board.slice());
+    }
+    if (this.state.board[rowIndex-1] && this.state.board[rowIndex-1][cellIndex].isBomb === false && this.state.board[rowIndex-1][cellIndex].clicked === false) {
+      this.recurseAndUncoverEmpties(rowIndex-1, cellIndex, board.slice());
+    }
+    if (this.state.board[rowIndex+1] && this.state.board[rowIndex+1][cellIndex].isBomb === false && this.state.board[rowIndex+1][cellIndex].clicked === false) {
+      this.recurseAndUncoverEmpties(rowIndex+1, cellIndex, board.slice());
+    }
+    if (this.state.board[rowIndex+1] && this.state.board[rowIndex+1][cellIndex-1] && this.state.board[rowIndex+1][cellIndex-1].isBomb === false && this.state.board[rowIndex+1][cellIndex-1].clicked === false) {
+      this.recurseAndUncoverEmpties(rowIndex+1, cellIndex-1, board.slice());
+    }
+    if (this.state.board[rowIndex+1] && this.state.board[rowIndex+1][cellIndex+1] && this.state.board[rowIndex+1][cellIndex+1].isBomb === false && this.state.board[rowIndex+1][cellIndex+1].clicked === false) {
+      this.recurseAndUncoverEmpties(rowIndex+1, cellIndex+1, board.slice());
+    }
+    if (this.state.board[rowIndex-1] && this.state.board[rowIndex-1][cellIndex-1] && this.state.board[rowIndex-1][cellIndex-1].isBomb === false && this.state.board[rowIndex-1][cellIndex-1].clicked === false) {
+      this.recurseAndUncoverEmpties(rowIndex-1, cellIndex-1, board.slice());
+    }
+    if (this.state.board[rowIndex-1] && this.state.board[rowIndex-1][cellIndex+1] && this.state.board[rowIndex-1][cellIndex+1].isBomb === false && this.state.board[rowIndex-1][cellIndex+1].clicked === false) {
+      this.recurseAndUncoverEmpties(rowIndex-1, cellIndex+1, board.slice());
+    }
+    
   }
 
   handelCellClick (rowIndex, cell, cellIndex) {
-    if ( (cell.isBomb === true && cell.clicked === false) || cell.surroundingBombs > 0) {
+    if (cell.isBomb === true && cell.clicked === false) {
       //loop through - change the cell to clicked and has bomb, then re-render
       // var newBoard = update(this.state.board, {
       //   [rowIndex]: {
@@ -100,9 +123,9 @@ class App extends Component {
       this.setState({
         board: newBoard
       });
-    } else {
- 
-      //this.recurseAndUncoverEmpties(rowIndex, cellIndex);
+    } else if (cell.clicked === false) {
+      var board = this.state.board.slice();
+      this.recurseAndUncoverEmpties(rowIndex, cellIndex, board);
     }
   }
 
