@@ -1,9 +1,14 @@
 import React, { Component } from 'react';
+import update from 'react-addons-update';
 import './App.css';
 
-const bomb = "./images/bomb.png";
-const empty = "./images/grass1.jpg";
-const flag = "./images/flag.png";
+// const bomb = "images/Bomb.png";
+// const empty = "./images/grass1.jpg";
+// const flag = "./images/flag.png";
+
+import bomb from './images/Bomb.png';
+import empty from './images/grass1.jpg';
+import flag from './images/flag.png';
 
 const isBombPlaced = function () {
   if (Math.random()<0.2) return true;
@@ -60,20 +65,37 @@ class App extends Component {
     };
   }
 
-  handelCellClick (cell) {
-    if (cell.isBomb) {
+  handelCellClick (rowIndex, cell, cellIndex) {
+    if (cell.isBomb === true && cell.clicked === false) {
       //loop through - change the cell to clicked and has bomb, then re-render
+      var newBoard = update(this.state.board, {
+          [rowIndex]: {
+              [cellIndex]: {
+                clicked: {
+                  $set: true
+                }
+              }
+            }
+        });
+
+        this.setState({
+          board: newBoard
+        })
     } else {
-      //reveal the cell - if the cell has numbers then show number else show empty image
+      //if not a bomb need to set to clicked
+      
+      
     }
   }
 
   render() {
     var board = this.state.board.map( (row, indexRow) => {
       var cells = row.map( (cell, indexCell) => {
-        return (<td key={indexCell}></td>);
+        //image is either null/bomb/empty
+        var image = this.state.board[indexRow][indexCell].clicked !== true ? null : this.state.board[indexRow][indexCell].isBomb === true ? <img style={{width:"40px"}} src={bomb} alt="empty cell" /> : <img style={{width:"40px"}} src={empty} alt="empty cell" />;
+        return (<td key={indexCell} onClick={this.handelCellClick.bind(this, indexRow, cell, indexCell)}>{image}</td>);
       });
-      return (<tr key={indexRow} onClick={this.handelCellClick.bind(this, cell)}>{cells}</tr>);
+      return (<tr key={indexRow}>{cells}</tr>);
     });
     return (
       <div className="container">
