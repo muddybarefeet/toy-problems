@@ -7,7 +7,7 @@ import empty from './images/grass1.jpg';
 import flag from './images/flag.png';
 
 const isBombPlaced = function () {
-  if (Math.random()<0.2) return true;
+  if (Math.random()<0.1) return true;
   return false;
 };
 
@@ -41,7 +41,8 @@ const makeBoard = function (size) {
       row.push({
         clicked: false,
         isBomb: isBombPlaced(),
-        surroundingBombs: 0
+        surroundingBombs: 0,
+        isFlag:false
       })
     }
     board.push(row);
@@ -101,16 +102,6 @@ class App extends Component {
 
   handelCellClick (rowIndex, cell, cellIndex) {
     if (cell.isBomb === true && cell.clicked === false) {
-      //loop through - change the cell to clicked and has bomb, then re-render
-      // var newBoard = update(this.state.board, {
-      //   [rowIndex]: {
-      //       [cellIndex]: {
-      //         clicked: {
-      //           $set: true
-      //         }
-      //       }
-      //     }
-      // });
       var newBoard = this.state.board.map( (row) => {
         return row.map( (cell) => {
           if (cell.isBomb === true) {
@@ -130,26 +121,55 @@ class App extends Component {
   }
 
   image (indexRow, indexCell) {
-    if (this.state.board[indexRow][indexCell].clicked !== true) {
-      return null;
-    }
+    if (this.state.board[indexRow][indexCell].clicked !== true) return null;
     if (this.state.board[indexRow][indexCell].isBomb === true) {
-      return (<img style={{width:"40px"}} src={bomb} alt="empty cell" />);
+      return (<img style={{width:"40px"}} src={bomb} alt="bomb" />);
+    }
+    if (this.state.board[indexRow][indexCell].isFlag === true) {
+      console.log('place flag', flag)
+      return (<img style={{width:"40px"}} src={flag} alt="flag" />);
     }
     if (this.state.board[indexRow][indexCell].surroundingBombs > 0) {
       return this.state.board[indexRow][indexCell].surroundingBombs;
     }
     if (this.state.board[indexRow][indexCell].surroundingBombs === 0) {
-      return (<img style={{width:"40px"}} src={empty} alt="empty cell" />);
+      return (<img style={{width:"40px"}} src={empty} alt="empty" />);
+    }
+  }
+
+  handelRightClick (rowIndex, cellIndex) {
+    var eventEmitted = Array.prototype.slice.call(arguments,2,3)[0];
+    eventEmitted.preventDefault();
+    var flagBool = this.state.board[rowIndex][cellIndex].isFlag;
+    if (this.state.board[rowIndex][cellIndex].clicked === false) {
+      
+      var newBoard = update(this.state.board, {
+        [rowIndex]: {
+            [cellIndex]: {
+              isFlag: {
+                $set: !flagBool
+              }
+            }
+          }
+      });
+      
+      this.setState({
+        board: newBoard
+      });
+      console.log('done');
     }
   }
 
   render() {
     var board = this.state.board.map( (row, indexRow) => {
       var cells = row.map( (cell, indexCell) => {
-        //image is either null/bomb/empty
+        //image is either null/bomb/empty/flag
         var image = this.image(indexRow, indexCell);
-        return (<td key={indexCell} onClick={this.handelCellClick.bind(this, indexRow, cell, indexCell)}>{image}</td>);
+        return (<td 
+                  key={indexCell} 
+                  onClick={this.handelCellClick.bind(this, indexRow, cell, indexCell)}
+                  onContextMenu={this.handelRightClick.bind(this, indexRow, indexCell)}
+                >{ image }</td>);
       });
       return (<tr key={indexRow}>{cells}</tr>);
     });
