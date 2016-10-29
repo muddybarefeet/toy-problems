@@ -101,6 +101,7 @@ class App extends Component {
   }
 
   handelCellClick (rowIndex, cell, cellIndex) {
+    if (cell.isFlag === true) return;
     if (cell.isBomb === true && cell.clicked === false) {
       var newBoard = this.state.board.map( (row) => {
         return row.map( (cell) => {
@@ -121,13 +122,12 @@ class App extends Component {
   }
 
   image (indexRow, indexCell) {
+    if (this.state.board[indexRow][indexCell].isFlag === true) {
+      return (<img style={{width:"40px"}} src={flag} alt="flag" />);
+    }
     if (this.state.board[indexRow][indexCell].clicked !== true) return null;
     if (this.state.board[indexRow][indexCell].isBomb === true) {
       return (<img style={{width:"40px"}} src={bomb} alt="bomb" />);
-    }
-    if (this.state.board[indexRow][indexCell].isFlag === true) {
-      console.log('place flag', flag)
-      return (<img style={{width:"40px"}} src={flag} alt="flag" />);
     }
     if (this.state.board[indexRow][indexCell].surroundingBombs > 0) {
       return this.state.board[indexRow][indexCell].surroundingBombs;
@@ -142,7 +142,6 @@ class App extends Component {
     eventEmitted.preventDefault();
     var flagBool = this.state.board[rowIndex][cellIndex].isFlag;
     if (this.state.board[rowIndex][cellIndex].clicked === false) {
-      
       var newBoard = update(this.state.board, {
         [rowIndex]: {
             [cellIndex]: {
@@ -156,7 +155,7 @@ class App extends Component {
       this.setState({
         board: newBoard
       });
-      console.log('done');
+      
     }
   }
 
