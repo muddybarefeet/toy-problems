@@ -7,13 +7,20 @@ var isSubStr = function (str, subStr) {
       matches.push(str.substr(i,subStr.length));
     }
   }
-  for (var i = 0; i < matches.length; i++) {
-    if (matches[i] === subStr) {
+  for (var k = 0; k < matches.length; k++) {
+    if (matches[k] === subStr) {
       return true;
     }
   }
   return false;
 };
 
-console.log(isSubStr('annannnannna', 'an'));
-console.log(isSubStr('annannnannna', 'b'));
+// ---- different solution
+var isSubStr2 = function (str, subStr) {
+  var matches = [];
+  if (str.match(subStr) !== null) return true;
+  return false;
+};
+
+console.log(isSubStr2('annannnannna', 'an'));
+console.log(isSubStr2('annannnannna', 'b'));
