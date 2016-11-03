@@ -16,12 +16,11 @@
 
 //implement bind
 
-Function.prototype.bind = function (context) {
-  //set this value
-  var that = this;
-  //return function to access arguments
+Function.prototype.binding = function (thisContext) {
+  var self = this;
+  var context = thisContext;
+  var args = Array.prototype.slice.call(arguments,1);
   return function () {
-    //get any arguments to the context and appy to the function that called bind
-    return that.apply(that,arguments);
+    return self.apply(context,args);
   };
 };
