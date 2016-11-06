@@ -16,18 +16,22 @@ process.stdin
     processInput(stdin);
 });
 
-var processInput = function (arr) {
+var processInput = function (str) {
   var result = "";
-  if (arr.length === 0) return "";
-  result += arr[0];
-  for (var i = 0; i < arr.length-1; i++) {
-    if (parseInt(arr[i],10)%2 === 0 && parseInt(arr[i+1],10)%2 === 0 && parseInt(arr[i],10) > 0 && parseInt(arr[i+1],10) > 0) {
-      result = result + "*" + arr[i+1];
-    } else if (parseInt(arr[i],10)%2 !== 0 && parseInt(arr[i+1],10)%2 !== 0 && parseInt(arr[i],10) > 0 && parseInt(arr[i+1],10) > 0) {
-      result = result + "-" + arr[i+1];
+
+  //imrovement would be to make str an array, map through and make all items numbers then removes some of the clutter  
+  
+  if (str.length === 0) return "";
+  result += str[0];
+  for (var i = 0; i < str.length-1; i++) {
+    if (parseInt(str[i],10)%2 === 0 && parseInt(str[i+1],10)%2 === 0 && parseInt(str[i],10) > 0 && parseInt(str[i+1],10) > 0) {
+      result = result + "*" + str[i+1];
+    } else if (parseInt(str[i],10)%2 !== 0 && parseInt(str[i+1],10)%2 !== 0 && parseInt(str[i],10) > 0 && parseInt(str[i+1],10) > 0) {
+      result = result + "-" + str[i+1];
     } else {
-      result = result + arr[i+1];
+      result = result + str[i+1];
     }
   }
   process.stdout.write(result);
 };
+
