@@ -1,4 +1,6 @@
-//----- second attempt
+//----- find the greatest gain from the lowest to the text highest
+
+
 var greatestDiff = function (arr) {
     var currLow = arr[0];
     var biggestDiff = -1;
