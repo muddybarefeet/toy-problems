@@ -6,6 +6,44 @@
 // if does not need to used the stones then retun 0
 // if the stones will not become uncovered and the monkey can never cross then return -1
 
+
+//--------------- take two ---------
+
+//given a river, time and step see if the river is passable
+var checkCurrentRiver = function (arr,step, currentTime) {
+    var currentPos = -1;
+    for (var i = 0; i < arr.length; i++) {
+        //loop through the river array if the current thing is less than the time AND the difference is less than or the same as the step then move current Index to here
+        if (arr[i] <= currentTime && (i-currentPos) <= step) {
+            currentPos = i;
+        }
+    }
+    if (currentPos === arr.length-1) return true;
+    return false;
+};
+
+var riverHop = function (rockArr, stepMax) {
+    var currentTime = 0;
+    if (stepMax >= rockArr.length) return 0;
+
+    //better way might be to loop and find largest
+    var maxTime = Math.max.apply(null,rockArr);
+
+    for (var i = 0; i <= maxTime; i++) {
+        //for each time we are going to see if it is possible to cross yet
+        if (checkCurrentRiver(rockArr,stepMax, currentTime)) return currentTime;
+        currentTime++;
+    }
+    return -1;
+};
+
+console.log(riverHop([2, 1, 66, 25, 40, 6], 2));
+console.log(riverHop([-1,-1,-1,-1], 2));
+console.log(riverHop([1,1,1,1,1,1,1,2], 1));
+
+
+//---------------------------------------------
+
 var solution = function (A, D) {
     //if monkey can cross the river in one leap return 0
     if (D >= A.length+1) return 0;
@@ -41,6 +79,5 @@ var solution = function (A, D) {
 
 };
 
-console.log(solution([22, 1, 66, 25, 343, 6], 2));
-
+// console.log(solution([22, 1, 66, 25, 343, 6], 2));
 
