@@ -26,12 +26,9 @@ var sortIntoBucketsAndReturnNewOrder = function (index, numbersArr) {
 // console.log('----',sortIntoBucketsAndReturnNewOrder(2,[ '003', '044', '777', '002' ]));
 
 var radixSort = function (arr) {
+  var maxLength = Math.max.apply(null, arr).toString().split("").length;
 
-  var arrCopy = arr.slice();
-
-  var maxLength = Math.max.apply(null, arrCopy).toString().split("").length;
-
-  var paddedArr = arrCopy.map(function (num) {
+  var paddedArr = arr.map(function (num) {
     var numLength = num.toString().split('').length;
     var diff;
     if (numLength < maxLength) {
@@ -44,14 +41,11 @@ var radixSort = function (arr) {
 
   var currentIndex = maxLength-1;
 
-  //sort each of the numbers at this index in each item in the array into the correct bucket and then pull out in a new order
   for (var i = 0; i <= maxLength-1; i++) {
     paddedArr = sortIntoBucketsAndReturnNewOrder(currentIndex, paddedArr);
     currentIndex-=1;
   }
-
   return paddedArr;
-
 };
 
 console.log( radixSort([3,44,777,2]) );

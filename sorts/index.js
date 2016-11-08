@@ -10,4 +10,5 @@
 // Quick Sort: 0(n log(n)) runtime on average and WORST = 0(n2). Memory 0(n log(n))
 
 // Counting Sort: 0(n+k) runtime (k = range of input)
+//Radix Sort: 0(kn) runtime (k = number of passes to be made/max length of max int in arr to be sorted)
 
