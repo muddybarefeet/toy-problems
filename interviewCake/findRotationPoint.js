@@ -1,6 +1,6 @@
 //find the rotation point in the array and return its index
 
-var words = [ 'a','b','c','d','e','g','i' ];
+var words = [ 'a','g','m','p'];
 
 var rotationPoint = function (arr) {
 
@@ -27,6 +27,33 @@ var rotationPoint = function (arr) {
 
   }
   return rightI;
+};
+
+//--------------second solution --------
+
+var rotationPoint = function (arr) {
+
+    if (arr.length === 1) return 0;
+    var first = arr[0];
+    var leftIndex = 0;
+    var rightIndex = arr.length-1;
+    if (first < arr[rightIndex]) return leftIndex;
+    
+    while (leftIndex < rightIndex) {
+        var mid = Math.floor( ((rightIndex-leftIndex)/2) + leftIndex);
+
+        if (arr[mid] > first) {
+            leftIndex = mid;
+        }
+
+        if (arr[mid] < first) {
+            rightIndex = mid;
+        }
+        if(leftIndex+1 === rightIndex) {
+          break;
+        }
+    }
+    return (leftIndex === rightIndex || arr[leftIndex] > arr[rightIndex])? rightIndex : leftIndex;
 };
 
 console.log('ans', rotationPoint(words));
