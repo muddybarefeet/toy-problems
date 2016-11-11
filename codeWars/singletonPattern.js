@@ -15,6 +15,7 @@ var singleton = function(){
 }();
 
 
+
 var getTheTimeThisStarted = function(name){
   
   var called = false;
@@ -39,14 +40,14 @@ var getTheTimeThisStarted = function(name){
   
 }();
 
-
 var s1 = getTheTimeThisStarted();
-var s2;
+console.log(s1)
+// var s2;
 
-setTimeout(function(){
-  s2 = getTheTimeThisStarted();
-  console.log(s1, s2);
-}, 100);
+// setTimeout(function(){
+//   s2 = getTheTimeThisStarted();
+//   console.log(s1, s2);
+// }, 100);
 
 
 
