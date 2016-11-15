@@ -1,42 +1,62 @@
 
 var converNumToBits = function (num) {
 
-  var sum = 0;
-  var factor = 0;
-  var nums = {};
+  var maxFactor = 69;
+  var currentSum = Math.pow(2,maxFactor);
+  var total = 0;
 
-  var result = [];
+  var result = "";
+  var flipped = false;
 
-  //loop up through the powers of two until the sum is greater than the number and populate string with ones
-  while (sum < num) {
-    sum += Math.pow(2,factor);
-    result.push(1);
-    factor++;
+  while (maxFactor > 0) {
+    if (total + currentSum <= num) {
+      result += "1";
+      total += currentSum;
+      flipped = true;
+    } else if (flipped === true) {
+      result += "0";
+    }
+    maxFactor--;
+    currentSum = Math.pow(2,maxFactor);
   }
 
-  //get the difference between the sum and the actual input
-  var difference = sum - num;
+  return result;
 
-  if (difference === 0) return result.join('');
+};
 
-  //reset
-  factor = 0;
+var numToBits3 = function(num){
 
-  //loop down through the result string to replace the necessary 1 with a 0 to make the result = input
-  for (var i = result.length-1; i >= 0; i--) {
-    // if (difference%2 === 0) {
-    //   if (Math.pow(2,factor) === difference) {
-    //     var newRes = result;
-    //     newRes[i] = 0;
-    //     return result.join('');
-    //   }
-    //   factor++;
-    // } else {
-    //   //if the difference is odd then need to find multiple number to get to the even
-      
-    // }
+  var msb = 1 << 30;
+  var result = '';
+  var remainder = num;
+
+  for(var i = msb; i > 0 && remainder > 0 ; i = i >> 1){
+    if(i <= remainder){
+      result += 1;
+      remainder = remainder - i;
+    }else{
+      result += 0;
+    }
   }
+
+  return result;
 
 };
 
 console.log(converNumToBits(20));
+
+
+var convertToBits2 = function (int) {
+
+  var result = "";
+  
+  for (var i = 1 << 30; i > 0; i = i >> 1) {
+    var num = int&i;
+    result += num > 1 ? 1 : 0;
+  }
+
+  return result;
+
+};
+
+console.log(convertToBits2(20));
