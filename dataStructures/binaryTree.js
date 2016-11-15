@@ -72,7 +72,6 @@ Tree.prototype.DFSelect = function (root) {
 
   return result;
 
-
 };
 
 var tree = new Tree(10);
@@ -86,3 +85,10 @@ console.log(tree.BFSelect());
 console.log(tree.DFSelect(tree));
 
 // console.log(tree);
+
+//preorder: root - left - right
+//inorder: left - root -right
+// post-order: left - right - root
+
+
+
