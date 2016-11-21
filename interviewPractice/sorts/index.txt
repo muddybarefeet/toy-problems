@@ -1,0 +1,21 @@
+
+
+bubbleSort = look through in pairs and swap if one side not less than other
+l=keep looping until sorted
+
+insertionSort = loop through and look at current pair. if not in order then sap and keep swapping back oto start
+
+selectionSort = finc largest and swap with current , find next largest and swap with next index
+
+quickSort = get pivot and then split the input into smaller and larger than pivot and recurse to all split and then concat back together
+
+mergesort = split array in half and in half and in half until one thing in the array and then join together
+
+
+radixSort = find longest number and pad rest of the numbers with that amount of zeors at start to make all the same length
+then sort by units, tens hundreds etc. until reach start of numbers --> sorted
+0(kn) (k = longest number)
+
+countingSort = make array of indexs that represent the number and the value is the number of times occurs and then loop through and put the index as the number (insert number of times needed)
+0(n+k) (k=largest num)
+
