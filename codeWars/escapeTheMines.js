@@ -51,7 +51,7 @@ var escapeTheMines = function (map, miner, exit, visited, moves) {
   visited = visited || makeVisited(map);
   moves = moves || [];
 
-  //if no valid moves and current is the exit then return moves so far
+  //if current is the exit return moves so far
   if (exit.x === miner.x && exit.y === miner.y) {
     // console.log('moves to win!', moves);
     return moves;
@@ -68,17 +68,25 @@ var escapeTheMines = function (map, miner, exit, visited, moves) {
   }
 
   //loop through positions and recurse on each
-  validMoves.forEach(function (position) {
+  var x = validMoves.map(function (position) {
     var latestMoves = moves.slice();
     latestMoves.push(position.direction);
-    delete position.direction;
+    // delete position.direction;
     var a = escapeTheMines(map, position, exit, visited, latestMoves);
     if (a !== undefined) {
-      console.log(a);
       return a;
     }
+  })
+  .filter(function(thing){
+    return !!thing;
   });
 
+  return denestify(x);
+
+};
+
+var denestify = function(nestedArray){
+  return Array.isArray(nestedArray[0]) ? denestify(nestedArray[0]) : nestedArray;
 };
 
 // var map = [[true, false],[true, true]];
