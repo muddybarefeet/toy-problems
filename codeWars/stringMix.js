@@ -8,7 +8,7 @@ mix(s1, s2) --> "1:mmmmmm/=:nnnnnn/1:aaaa/1:hhh/2:yyy/2:dd/2:ff/2:ii/2:rr/=:ee/=
 s1="Are the kids at home? aaaaa fffff"
 s2="Yes they are here! aaaaa fffff"
 mix(s1, s2) --> "=:aaaaaa/2:eeeee/=:fffff/1:tt/2:rr/=:hh"
-
+ 
 */
 
 var makeObj = function (arr1, arr2) {
@@ -67,22 +67,22 @@ var mix = function (s1,s2) {
     if (formatStr) strs.push(formatStr);
   }
 
-  //sort the array
-  return strs.sort(function (a,b) {
-    // return a.length < b.length ? 1 : -1;
-    if (a.length < b.length) {
-      return 1;
-    } else if (b.length < a.length) {
-      return -1;
-    } else if (a.length === b.length) {
-      return (a[0] < b[0]) ? -1 : 1;
-      // if (a[0] < b[0]) {
-      //   return a[a.length-2] < b[b.length-2] ? -1 : 1;
-      // } else {
-      //   return a[a.length-2] > b[b.length-2] ? -1 : 1;
-      // }
-    }
-  }).join("").replace(/.$/,"");
+  return strs.sort(function(a, b){
+    //when tied, alphabetically
+    return a[a.length-2] < b[b.length-2] ? -1 : 1;
+  })
+  .sort(function(a, b){
+    //when tied, 1s before 2s before =
+    if(a[0] < b[0]) return -1;
+    if(a[0] > b[0]) return 1;
+    return 0;
+  })
+  .sort(function(a, b){
+    //first largest number of letters
+    return b.length - a.length;
+  })
+  .join("")
+  .replace(/.$/,"");
 
 };
 
