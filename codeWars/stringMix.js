@@ -37,6 +37,9 @@ var makeObj = function (arr1, arr2) {
 };
 
 var makeStr = function (tuple, letter) {
+  if (tuple[0] && !tuple[1] && tuple[0] > 1) {
+    return "1:" + letter.repeat(tuple[0]) + "/";
+  }
   if (tuple[0] > tuple[1] && tuple[0] > 1) {
     return "1:" + letter.repeat(tuple[0]) + "/";
   }
@@ -63,10 +66,10 @@ var mix = function (s1,s2) {
   var strs = [];
   //now we loop through the obj and make an array of strings for each letter if there is a ount greater than one for it
   for (var key in obj1) {
+    // console.log('-----',key)
     var formatStr = makeStr(obj1[key], key);
     if (formatStr) strs.push(formatStr);
   }
-
   return strs.sort(function(a, b){
     //when tied, alphabetically
     return a[a.length-2] < b[b.length-2] ? -1 : 1;
@@ -86,6 +89,7 @@ var mix = function (s1,s2) {
 
 };
 
-var s1="Are the kids at home? aaaaa x fffff";
-var s2="Yes they are here! aaaaa xx fffff";
-console.log(mix(s1, s2));// --> "=:aaaaaa/2:eeeee/=:fffff/1:tt/2:rr/=:hh"
+// var s1="Are the kids at home? aaaaa x fffff";
+// var s2="Yes they are here! aaaaa xx fffff";
+// console.log(mix(s1, s2));// --> "=:aaaaaa/2:eeeee/=:fffff/1:tt/2:rr/=:hh"
+console.log(mix(" In many languages", " there's a pair of functions")); //"1:aaa/1:nnn/1:gg/2:ee/2:ff/2:ii/2:oo/2:rr/2:ss/2:tt"
