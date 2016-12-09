@@ -26,7 +26,7 @@ var require = function(filePath){
 
   javascript = "function(){\n" + javascript;
 
-  javascript += "return module.exports;\n}();"
+  javascript += "return module.exports;\n}();";
 
   return new Function(javascript)();
 
