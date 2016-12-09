@@ -6,23 +6,20 @@ function stripUrlParams(url, paramsToStrip){
 
   var arr = url.split("?");
 
-
   if (arr[1]) {
     var params = arr[1].split("&");
 
+    //if there was params to remove then remove them
     if (paramsToStrip) {
-
       var paramsToStripObj = {};
       paramsToStrip.forEach(function (item) {
         paramsToStripObj[item] = true;
       });
-
       var filteredParamsOnce = params.filter(function (item) {
         if (!paramsToStripObj[item[0]]) {
           return item;
         }
       });
-
       params = filteredParamsOnce;
     }
 
@@ -34,8 +31,10 @@ function stripUrlParams(url, paramsToStrip){
         return item;
       }
     }).join("&");
+
     return arr[0] + "?" + remDups;
   }
+
   return url;
 }
 
